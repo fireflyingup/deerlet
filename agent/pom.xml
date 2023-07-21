@@ -7,10 +7,9 @@
         <groupId>com.fireflyingup</groupId>
         <artifactId>deerlet</artifactId>
         <version>${revision}</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>boot</artifactId>
+    <artifactId>agent</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -18,23 +17,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.fireflyingup</groupId>
-            <artifactId>common</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.olivergondza</groupId>
-            <artifactId>maven-jdk-tools-wrapper</artifactId>
-            <version>0.1</version>
-            <scope>provided</scope>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
-
     <build>
-        <finalName>deerlet-${artifactId}</finalName>
+        <finalName>arthas-agent</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -50,10 +34,11 @@
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
                             <archive>
-                                <manifest>
-                                    <mainClass>com.fireflyingup.deerlet.boot.Main</mainClass>
-                                </manifest>
                                 <manifestEntries>
+                                    <Premain-Class>com.fireflyingup.agent.Agent</Premain-Class>
+                                    <Agent-Class>com.fireflyingup.agent.Agent</Agent-Class>
+                                    <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                                    <Can-Retransform-Classes>true</Can-Retransform-Classes>
                                     <Specification-Title>${project.name}</Specification-Title>
                                     <Specification-Version>${project.version}</Specification-Version>
                                     <Implementation-Title>${project.name}</Implementation-Title>
@@ -66,4 +51,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
