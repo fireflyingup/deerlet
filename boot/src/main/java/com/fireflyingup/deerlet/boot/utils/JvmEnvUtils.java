@@ -4,8 +4,6 @@ import com.fireflyingup.deerlet.common.PrintLog;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author: Fire Flying
@@ -15,20 +13,13 @@ import java.util.List;
 public class JvmEnvUtils {
 
     public static String getJps() {
-        String property = System.getProperty("java.home");
-        if (ObjectUtils.isEmpty(property)) {
-            property = System.getProperty("JAVA_HOME");
-            if (property.isEmpty()) {
-                PrintLog.error("could not find any jdk.");
-                return null;
-            }
-        }
+        String property = getJavaHome();
         String[] jps = { "bin/jps", "bin/jps.exe", "../bin/jps", "../bin/jps.exe" };
 
         for (String jp : jps) {
             File file = new File(property, jp);
             if (file.exists()) {
-                PrintLog.warn("get jsp path : " + file.getAbsolutePath());
+                PrintLog.debug("get jsp path : " + file.getAbsolutePath());
                 return file.getAbsolutePath();
             }
         }
@@ -38,7 +29,16 @@ public class JvmEnvUtils {
     }
 
     public static String getJava() {
-
+        String property = getJavaHome();
+        String[] javas = { "bin/java", "bin/java.exe", "../bin/java", "../bin/java.exe" };
+        for (String java : javas) {
+            File file = new File(java);
+            if (file.exists()) {
+                PrintLog.debug("get jsp path : " + file.getAbsolutePath());
+                return file.getAbsolutePath();
+            }
+        }
+        return null;
     }
 
     public static String getJavaHome() {
