@@ -26,11 +26,13 @@ public class Boot {
         String pid = findPid();
         VirtualMachine virtualMachine = null;
         virtualMachine = VirtualMachine.attach(pid);
-        virtualMachine.loadAgent("/Users/guoying/big/myProject/java/deerlet/agent/target/arthas-agent-jar-with-dependencies.jar");
+//        virtualMachine.loadAgent("/Users/guoying/big/myProject/java/deerlet/agent/target/arthas-agent-jar-with-dependenciess-agent-jar-with-dependencies.jar");
+        virtualMachine.loadAgent("D:\\myProgram\\deerlet\\agent\\target\\arthas-agent-jar-with-dependencies.jar");
     }
 
     private static String findPid( ) {
         String jps = JvmEnvUtils.getJps();
+        System.out.println(jps);
         List<String> run = CommandUtils.run(jps, "-l");
         if (ObjectUtils.isEmpty(run)) {
             PrintLog.error("can not find any java progress with 'jps -l' command.");

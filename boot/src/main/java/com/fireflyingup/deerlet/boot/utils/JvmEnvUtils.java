@@ -15,7 +15,6 @@ public class JvmEnvUtils {
     public static String getJps() {
         String property = getJavaHome();
         String[] jps = { "bin/jps", "bin/jps.exe", "../bin/jps", "../bin/jps.exe" };
-
         for (String jp : jps) {
             File file = new File(property, jp);
             if (file.exists()) {
@@ -32,7 +31,7 @@ public class JvmEnvUtils {
         String property = getJavaHome();
         String[] javas = { "bin/java", "bin/java.exe", "../bin/java", "../bin/java.exe" };
         for (String java : javas) {
-            File file = new File(java);
+            File file = new File(property, java);
             if (file.exists()) {
                 PrintLog.debug("get jsp path : " + file.getAbsolutePath());
                 return file.getAbsolutePath();
@@ -42,9 +41,9 @@ public class JvmEnvUtils {
     }
 
     public static String getJavaHome() {
-        String property = System.getProperty("java.home");
+        String property = System.getenv("JAVA_HOME");
         if (ObjectUtils.isEmpty(property)) {
-            property = System.getProperty("JAVA_HOME");
+            property = System.getProperty("java.home");
             if (property.isEmpty()) {
                 PrintLog.error("could not find any jdk.");
                 return null;
