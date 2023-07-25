@@ -4,11 +4,9 @@ package com.fireflyingup.deerlet.boot;
 import com.fireflyingup.deerlet.boot.utils.JvmEnvUtils;
 import com.fireflyingup.deerlet.common.CommandUtils;
 import com.fireflyingup.deerlet.common.PrintLog;
-import com.sun.tools.attach.AttachNotSupportedException;
 import com.sun.tools.attach.VirtualMachine;
 import org.apache.commons.lang3.ObjectUtils;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -22,7 +20,7 @@ import java.util.*;
  * @create: 2023-07-20 15:32
  **/
 
-public class Main {
+public class Boot {
 
     public static void main(String[] args) throws Exception {
         String pid = findPid();
@@ -39,7 +37,7 @@ public class Main {
             System.exit(1);
         }
         int index = 1;
-        PrintLog.info("choose a process to attack, for example: choose 1 then enter");
+        PrintLog.info("choose a process to attack, for example: choose one then enter");
         Map<Integer, String> map = new HashMap<>();
         for (String s : run) {
             String[] split = s.split("\\s+");

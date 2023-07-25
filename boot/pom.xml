@@ -51,7 +51,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>com.fireflyingup.deerlet.boot.Main</mainClass>
+                                    <mainClass>com.fireflyingup.deerlet.boot.Boot</mainClass>
                                 </manifest>
                                 <manifestEntries>
                                     <Specification-Title>${project.name}</Specification-Title>

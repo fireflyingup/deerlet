@@ -35,8 +35,8 @@
                             </descriptorRefs>
                             <archive>
                                 <manifestEntries>
-                                    <Premain-Class>com.fireflyingup.agent.Agent</Premain-Class>
-                                    <Agent-Class>com.fireflyingup.agent.Agent</Agent-Class>
+                                    <Premain-Class>com.fireflyingup.deerlet.agent.Agent</Premain-Class>
+                                    <Agent-Class>com.fireflyingup.deerlet.agent.Agent</Agent-Class>
                                     <Can-Redefine-Classes>true</Can-Redefine-Classes>
                                     <Can-Retransform-Classes>true</Can-Retransform-Classes>
                                     <Specification-Title>${project.name}</Specification-Title>
