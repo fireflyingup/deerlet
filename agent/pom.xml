@@ -17,6 +17,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.fireflyingup</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>${artifactId}</finalName>
         <plugins>

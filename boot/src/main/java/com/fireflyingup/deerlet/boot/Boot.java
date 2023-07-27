@@ -7,6 +7,7 @@ import com.fireflyingup.deerlet.common.PrintLog;
 import com.sun.tools.attach.VirtualMachine;
 import org.apache.commons.lang3.ObjectUtils;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -26,13 +27,22 @@ public class Boot {
         String pid = findPid();
         VirtualMachine virtualMachine = null;
         virtualMachine = VirtualMachine.attach(pid);
-//        virtualMachine.loadAgent("/Users/guoying/big/myProject/java/deerlet/agent/target/arthas-agent-jar-with-dependenciess-agent-jar-with-dependencies.jar");
-        virtualMachine.loadAgent("D:\\myProgram\\deerlet\\agent\\target\\arthas-agent-jar-with-dependencies.jar");
+        String parentPath = getParentPath();
+        File file = new File(parentPath, "agent.jar");
+        if (!file.exists()) {
+            throw new Exception("agent.jar 未找到");
+        }
+        virtualMachine.loadAgent(file.getAbsolutePath());
+    }
+
+    private static String getParentPath() {
+        String path = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(path);
+        return file.getParent();
     }
 
     private static String findPid( ) {
         String jps = JvmEnvUtils.getJps();
-        System.out.println(jps);
         List<String> run = CommandUtils.run(jps, "-l");
         if (ObjectUtils.isEmpty(run)) {
             PrintLog.error("can not find any java progress with 'jps -l' command.");
