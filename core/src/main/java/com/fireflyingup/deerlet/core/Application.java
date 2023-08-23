@@ -1,19 +1,15 @@
 package com.fireflyingup.deerlet.core;
 
-import com.fireflyingup.deerlet.common.PrintLog;
 import com.fireflyingup.deerlet.core.transformer.CustomClassFileTransformer;
-import com.sun.corba.se.impl.orbutil.ObjectUtility;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 
 /**
-*
-* @author: Fire Flying
-*
-* @create: 2023-07-25 15:46
-**/
+ * @author: Fire Flying
+ * @create: 2023-07-25 15:46
+ **/
 
 public class Application {
 
@@ -32,7 +28,7 @@ public class Application {
         try {
             if (ObjectUtils.isNotEmpty(allLoadedClasses)) {
                 for (Class<?> clazz : allLoadedClasses) {
-                    if(inst.isModifiableClass(clazz)) {
+                    if (inst.isModifiableClass(clazz)) {
                         inst.retransformClasses(clazz);
                     }
                 }
