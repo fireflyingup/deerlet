@@ -1,6 +1,7 @@
 package com.fireflyingup.deerlet.core;
 
-import com.fireflyingup.deerlet.core.transformer.CustomClassFileTransformer;
+import com.fireflyingup.deerlet.core.transformer.InformationGenTransformer;
+import com.fireflyingup.deerlet.core.transformer.TransformerManager;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.lang.instrument.Instrumentation;
@@ -17,26 +18,16 @@ public class Application {
 
     private String args;
 
+    public static TransformerManager transformerManager;
+
     public Application(Instrumentation inst, String args) {
         this.inst = inst;
         this.args = args;
+        transformerManager = new TransformerManager(inst);
     }
 
     public boolean start() {
-        inst.addTransformer(new CustomClassFileTransformer(), true);
-        Class<?>[] allLoadedClasses = inst.getAllLoadedClasses();
-        try {
-            if (ObjectUtils.isNotEmpty(allLoadedClasses)) {
-                for (Class<?> clazz : allLoadedClasses) {
-                    if (inst.isModifiableClass(clazz)) {
-                        inst.retransformClasses(clazz);
-                    }
-                }
-            }
-        } catch (UnmodifiableClassException e) {
-            e.printStackTrace();
-            return false;
-        }
+        System.out.println("into start");
         return true;
     }
 
