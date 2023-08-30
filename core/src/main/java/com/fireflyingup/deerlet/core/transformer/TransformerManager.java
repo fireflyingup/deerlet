@@ -1,11 +1,14 @@
 package com.fireflyingup.deerlet.core.transformer;
 
 
+import com.fireflyingup.deerlet.core.info.ClassInfo;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -24,6 +27,19 @@ public class TransformerManager {
         informationGenTransformer = new InformationGenTransformer();
         addTransform(informationGenTransformer);
         reTransformClasses();
+        Thread t = new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("load class size:" + InformationGenTransformer.relationMap.size());
+            Set<Map.Entry<Class<?>, ClassInfo>> entries = InformationGenTransformer.relationMap.entrySet();
+            for (Map.Entry<Class<?>, ClassInfo> entry : entries) {
+                System.out.println(entry.getValue());
+            }
+        });
+        t.start();
     }
 
     public void addTransform(AbstractTransformer transformer) {

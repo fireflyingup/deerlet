@@ -27,7 +27,6 @@ public class Application {
     }
 
     public boolean start() {
-        System.out.println("into start");
         return true;
     }
 
