@@ -23,7 +23,11 @@ public class Application {
     public Application(Instrumentation inst, String args) {
         this.inst = inst;
         this.args = args;
-        transformerManager = new TransformerManager(inst);
+        try {
+            transformerManager = new TransformerManager(inst);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean start() {

@@ -24,7 +24,10 @@ public class InformationGenTransformer extends AbstractTransformer {
     @Override
     public byte[] transform(ClassLoader loader, String className, Class<?> classBeingRedefined, ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
         // 排除自身的类
-        if (AsmUtils.isSelf(classBeingRedefined) || !"demo/MathGame".equals(className)) {
+//        if (AsmUtils.isSelf(classBeingRedefined) || !"demo/MathGame".equals(className)) {
+//            return classfileBuffer;
+//        }
+        if (!"com/fireflyingup/deerlet/demo/Main".equals(className)) {
             return classfileBuffer;
         }
         ClassInfo classInfo = relationMap.get(classBeingRedefined);
@@ -61,7 +64,11 @@ public class InformationGenTransformer extends AbstractTransformer {
         @Override
         public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
             MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
-            return new InformationGenMethod(Opcodes.ASM9, methodVisitor);
+            if (name.equals("action")) {
+                return new InformationGenMethod(Opcodes.ASM9, methodVisitor);
+            } else {
+                return methodVisitor;
+            }
         }
 
         public static class InformationGenMethod extends MethodVisitor{
@@ -71,30 +78,64 @@ public class InformationGenTransformer extends AbstractTransformer {
 
             @Override
             public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-                System.out.println(name);
-                if (name.equals("primeFactors")) {
-                    Label startTry = new Label();
-                    Label endTry = new Label();
-                    Label catchLabel = new Label();
+                System.out.println("into method " + name);
+                Label label0 = new Label();
+                Label label1 = new Label();
+                Label label2 = new Label();
+                mv.visitTryCatchBlock(label0, label1, label2, "java/lang/Exception");
+                Label label3 = new Label();
+                mv.visitTryCatchBlock(label0, label1, label3, null);
+                Label label4 = new Label();
+                mv.visitTryCatchBlock(label2, label4, label3, null);
 
-                    // Insert try block
-                    mv.visitTryCatchBlock(startTry, endTry, catchLabel, "java/lang/Exception");
-                    mv.visitLabel(startTry);
+                mv.visitLabel(label0);
+                mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                mv.visitInsn(Opcodes.ICONST_1);
+                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
 
-                    super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+                Label label5 = new Label();
+                mv.visitLabel(label5);
+                mv.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
 
-                    // Insert end of try block and start of catch block
-                    mv.visitLabel(endTry);
-                    mv.visitJumpInsn(Opcodes.GOTO, catchLabel);
-                    mv.visitLabel(catchLabel);
-                    mv.visitVarInsn(Opcodes.ASTORE, 100); // Store the exception in a local variable
+                mv.visitLabel(label1);
+                mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                mv.visitInsn(Opcodes.ICONST_3);
+                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
 
-                    // Handle exception (print or log)
-                    mv.visitVarInsn(Opcodes.ALOAD, 100); // Load the exception from the local variable
-                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Exception", "printStackTrace", "()V", false);
-                } else {
-                    super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-                }
+                Label label6 = new Label();
+                mv.visitLabel(label6);
+                Label nextLabel = new Label();
+                mv.visitJumpInsn(Opcodes.GOTO, nextLabel);
+
+                mv.visitLabel(label2);
+                mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]{"java/lang/Exception"});
+                mv.visitVarInsn(Opcodes.ASTORE, 0);
+
+                Label label8 = new Label();
+                mv.visitLabel(label8);
+                mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                mv.visitInsn(Opcodes.ICONST_2);
+                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
+                mv.visitLabel(label4);
+                mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                mv.visitInsn(Opcodes.ICONST_3);
+                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
+                Label label9 = new Label();
+                mv.visitLabel(label9);
+                mv.visitJumpInsn(Opcodes.GOTO, nextLabel);
+                mv.visitLabel(label3);
+                mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]{"java/lang/Throwable"});
+                mv.visitVarInsn(Opcodes.ASTORE, 1);
+                mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+                mv.visitInsn(Opcodes.ICONST_3);
+                mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(I)V", false);
+                Label label10 = new Label();
+                mv.visitLabel(label10);
+                mv.visitVarInsn(Opcodes.ALOAD, 1);
+                mv.visitInsn(Opcodes.ATHROW);
+
+                mv.visitLabel(nextLabel);
+                mv.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
             }
         }
     }

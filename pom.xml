@@ -14,6 +14,8 @@
         <module>spy</module>
         <module>common</module>
         <module>agent</module>
+        <module>demo</module>
+        <module>client</module>
     </modules>
 
     <properties>
@@ -21,6 +23,8 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <revision>1.0.0</revision>
+        <cfr.version>0.152</cfr.version>
+        <jline.version>3.23.0</jline.version>
     </properties>
 
     <dependencyManagement>
@@ -28,12 +32,17 @@
             <dependency>
                 <groupId>org.benf</groupId>
                 <artifactId>cfr</artifactId>
-                <version>0.152</version>
+                <version>${cfr.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fireflyingup</groupId>
                 <artifactId>common</artifactId>
                 <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jline</groupId>
+                <artifactId>jline</artifactId>
+                <version>${jline.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
