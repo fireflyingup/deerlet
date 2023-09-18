@@ -2,9 +2,9 @@
 
 cd .. && mvn clean package
 
-cp boot/target/boot-jar-with-dependencies.jar package/boot.jar
-cp agent/target/agent-jar-with-dependencies.jar package/agent.jar
-cp core/target/core-jar-with-dependencies.jar package/core.jar
+cp deerlet-boot/target/deerlet-boot-jar-with-dependencies.jar package/deerlet-boot.jar
+cp deerlet-agent/target/deerlet-agent-jar-with-dependencies.jar package/deerlet-agent.jar
+cp deerlet-core/target/deerlet-core-jar-with-dependencies.jar package/deerlet-core.jar
 cp demo/target/demo-jar-with-dependencies.jar package/demo.jar
-cp client/target/client-jar-with-dependencies.jar package/client.jar
+cp deerlet-client/target/deerlet-client-jar-with-dependencies.jar package/deerlet-client.jar
 

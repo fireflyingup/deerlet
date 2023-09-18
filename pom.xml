@@ -9,13 +9,15 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <modules>
-        <module>core</module>
-        <module>boot</module>
-        <module>spy</module>
-        <module>common</module>
-        <module>agent</module>
+        <module>deerlet-core</module>
+        <module>deerlet-boot</module>
+        <module>deerlet-spy</module>
+        <module>deerlet-common</module>
+        <module>deerlet-agent</module>
         <module>demo</module>
-        <module>client</module>
+        <module>deerlet-client</module>
+        <module>deerlet-netty-client</module>
+        <module>deerlet-netty-server</module>
     </modules>
 
     <properties>
@@ -25,6 +27,7 @@
         <revision>1.0.0</revision>
         <cfr.version>0.152</cfr.version>
         <jline.version>3.23.0</jline.version>
+        <netty.version>4.1.97.Final</netty.version>
     </properties>
 
     <dependencyManagement>
@@ -36,7 +39,7 @@
             </dependency>
             <dependency>
                 <groupId>com.fireflyingup</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>deerlet-common</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
@@ -44,6 +47,13 @@
                 <artifactId>jline</artifactId>
                 <version>${jline.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

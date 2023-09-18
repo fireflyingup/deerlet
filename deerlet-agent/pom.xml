@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>demo</artifactId>
+    <artifactId>deerlet-agent</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -18,6 +18,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.fireflyingup</groupId>
+            <artifactId>deerlet-common</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <finalName>${artifactId}</finalName>
@@ -37,7 +43,8 @@
                             </descriptorRefs>
                             <archive>
                                 <manifestEntries>
-                                    <Main-Class>com.fireflyingup.deerlet.demo.Main</Main-Class>
+                                    <Premain-Class>com.fireflyingup.deerlet.agent.Agent</Premain-Class>
+                                    <Agent-Class>com.fireflyingup.deerlet.agent.Agent</Agent-Class>
                                     <Can-Redefine-Classes>true</Can-Redefine-Classes>
                                     <Can-Retransform-Classes>true</Can-Retransform-Classes>
                                     <Specification-Title>${project.name}</Specification-Title>
@@ -52,4 +59,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>
