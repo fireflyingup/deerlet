@@ -23,6 +23,16 @@
             <groupId>org.jline</groupId>
             <artifactId>jline</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fireflyingup</groupId>
+            <artifactId>deerlet-netty-client</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -43,7 +53,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifestEntries>
-                                    <Main-Class>com.fireflyingup.deerlet.client.Main</Main-Class>
+                                    <Main-Class>com.fireflyingup.deerlet.client.DeerletClient</Main-Class>
                                     <Can-Redefine-Classes>true</Can-Redefine-Classes>
                                     <Can-Retransform-Classes>true</Can-Retransform-Classes>
                                     <Specification-Title>${project.name}</Specification-Title>

@@ -19,10 +19,8 @@ public class DeerletNettyServer {
 
     private Integer port;
 
-    public DeerletNettyServer(String ip, Integer port) {
-        this.ip = ip;
-        this.port = port;
-    }
+    private ChannelInitializer<SocketChannel> channelInitializer;
+
 
     public void start() throws Exception {
         try {
@@ -37,7 +35,7 @@ public class DeerletNettyServer {
                     //设置保持活动连接状态
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     //使用匿名内部类的形式初始化通道对象
-                    .childHandler(new SocketChannelInitializer());
+                    .childHandler(channelInitializer);
             //给workerGroup的EventLoop对应的管道设置处理器
             //绑定端口号，启动服务端
             ChannelFuture channelFuture = bootstrap.bind(ip, port).sync();
@@ -49,4 +47,30 @@ public class DeerletNettyServer {
         }
     }
 
+    public String getIp() {
+        return ip;
+    }
+
+    public DeerletNettyServer setIp(String ip) {
+        this.ip = ip;
+        return this;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public DeerletNettyServer setPort(Integer port) {
+        this.port = port;
+        return this;
+    }
+
+    public ChannelInitializer<SocketChannel> getChannelInitializer() {
+        return channelInitializer;
+    }
+
+    public DeerletNettyServer setChannelInitializer(ChannelInitializer<SocketChannel> channelInitializer) {
+        this.channelInitializer = channelInitializer;
+        return this;
+    }
 }

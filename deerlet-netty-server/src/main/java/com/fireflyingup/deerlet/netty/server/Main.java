@@ -10,7 +10,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        DeerletNettyServer deerletNettyServer = new DeerletNettyServer("127.0.0.1", 6666);
+        DeerletNettyServer deerletNettyServer = new DeerletNettyServer()
+                .setIp("127.0.0.1").
+                setPort(6666).
+                setChannelInitializer(new SocketChannelInitializer());
         deerletNettyServer.start();
     }
 

@@ -2,10 +2,11 @@ package com.fireflyingup.deerlet.netty.server;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ServerChannel;
+import io.netty.channel.socket.SocketChannel;
 
-public class SocketChannelInitializer extends ChannelInitializer<ServerChannel> {
+public class SocketChannelInitializer extends ChannelInitializer<SocketChannel> {
     @Override
-    protected void initChannel(ServerChannel serverChannel) throws Exception {
-        serverChannel.pipeline().addLast(new MyServerHandler());
+    protected void initChannel(SocketChannel socketChannel) throws Exception {
+        socketChannel.pipeline().addLast(new MyServerHandler());
     }
 }

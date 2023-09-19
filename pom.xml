@@ -28,6 +28,7 @@
         <cfr.version>0.152</cfr.version>
         <jline.version>3.23.0</jline.version>
         <netty.version>4.1.97.Final</netty.version>
+        <jcommander.version>1.82</jcommander.version>
     </properties>
 
     <dependencyManagement>
@@ -52,6 +53,25 @@
                 <groupId>io.netty</groupId>
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.beust/jcommander -->
+            <dependency>
+                <groupId>com.beust</groupId>
+                <artifactId>jcommander</artifactId>
+                <version>${jcommander.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fireflyingup</groupId>
+                <artifactId>deerlet-netty-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fireflyingup</groupId>
+                <artifactId>deerlet-netty-server</artifactId>
+                <version>${revision}</version>
             </dependency>
 
         </dependencies>
