@@ -1,7 +1,6 @@
 package com.fireflyingup.deerlet.netty.server;
 
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ServerChannel;
 import io.netty.channel.socket.SocketChannel;
 
 public class SocketChannelInitializer extends ChannelInitializer<SocketChannel> {
