@@ -38,6 +38,7 @@ public class DeerletClient {
         if (ObjectUtils.isNotEmpty(deerletClient.getPort())) {
             this.setPort(deerletClient.getPort());
         }
+        CommunicationHandler communicationHandler = new CommunicationHandler();
 
         DeerletNettyClient deerletNettyClient = new DeerletNettyClient()
                 .setIp(deerletClient.host)
@@ -50,7 +51,7 @@ public class DeerletClient {
                         pipeline.addLast(new StringDecoder());
                         pipeline.addLast(new StringEncoder());
                         pipeline.addLast(new IdleStateHandler(5, 5, 10));
-                        pipeline.addLast(new CommunicationHandler());
+                        pipeline.addLast(communicationHandler);
                     }
                 });
         deerletNettyClient.start();

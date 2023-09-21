@@ -33,6 +33,11 @@
             <groupId>com.fireflyingup</groupId>
             <artifactId>deerlet-netty-client</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.fireflyingup</groupId>
+            <artifactId>deerlet-common</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
