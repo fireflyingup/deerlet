@@ -13,7 +13,7 @@ public class Main {
         DeerletNettyServer deerletNettyServer = new DeerletNettyServer()
                 .setIp("127.0.0.1").
                 setPort(6666).
-                setChannelInitializer(new SocketChannelInitializer());
+                addHandler(new MyServerHandler());
         deerletNettyServer.start();
     }
 

@@ -3,16 +3,14 @@ package com.fireflyingup.deerlet.netty.client;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.CharsetUtil;
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeerletNettyClient {
 
@@ -22,13 +20,13 @@ public class DeerletNettyClient {
 
     private Integer port;
 
-    private ChannelInitializer<SocketChannel> channelInitializer;
+    private List<ChannelHandlerAdapter> handlerAdapters;
 
     public void start() throws Exception {
         try {
             //创建bootstrap对象，配置参数
             Bootstrap bootstrap = new Bootstrap();
-            SocketChannelInitializer socketChannelInitializer = new SocketChannelInitializer(null);
+            SocketChannelInitializer socketChannelInitializer = new SocketChannelInitializer(handlerAdapters);
             //设置线程组
             bootstrap.group(eventExecutors)
                     //设置客户端的通道实现类型
@@ -64,12 +62,12 @@ public class DeerletNettyClient {
         return this;
     }
 
-    public ChannelInitializer<SocketChannel> getChannelInitializer() {
-        return channelInitializer;
-    }
-
-    public DeerletNettyClient setChannelInitializer(ChannelInitializer<SocketChannel> channelInitializer) {
-        this.channelInitializer = channelInitializer;
+    public DeerletNettyClient addHandler(ChannelHandlerAdapter adapter) {
+        if (ObjectUtils.isEmpty(handlerAdapters)) {
+            this.handlerAdapters = new ArrayList<>();
+        }
+        this.handlerAdapters.add(adapter);
         return this;
     }
+
 }

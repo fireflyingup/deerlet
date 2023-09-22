@@ -1,13 +1,14 @@
 package com.fireflyingup.deerlet.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.apache.commons.lang3.ObjectUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DeerletNettyServer {
 
@@ -19,13 +20,15 @@ public class DeerletNettyServer {
 
     private Integer port;
 
-    private ChannelInitializer<SocketChannel> channelInitializer;
+    private List<ChannelHandlerAdapter> handlerAdapters;
 
 
     public void start() throws Exception {
         try {
             //创建服务端的启动对象，设置参数
             ServerBootstrap bootstrap = new ServerBootstrap();
+
+            ChannelInitializer<SocketChannel> channelInitializer = new SocketChannelInitializer(handlerAdapters);
             //设置两个线程组boosGroup和workerGroup
             bootstrap.group(bossGroup, workerGroup)
                     //设置服务端通道实现类型
@@ -65,12 +68,11 @@ public class DeerletNettyServer {
         return this;
     }
 
-    public ChannelInitializer<SocketChannel> getChannelInitializer() {
-        return channelInitializer;
-    }
-
-    public DeerletNettyServer setChannelInitializer(ChannelInitializer<SocketChannel> channelInitializer) {
-        this.channelInitializer = channelInitializer;
+    public DeerletNettyServer addHandler(ChannelHandlerAdapter adapter) {
+        if (ObjectUtils.isEmpty(handlerAdapters)) {
+            this.handlerAdapters = new ArrayList<>();
+        }
+        this.handlerAdapters.add(adapter);
         return this;
     }
 }
