@@ -1,13 +1,22 @@
 package com.fireflyingup.deerlet.client;
 
+import com.fireflyingup.deerlet.netty.client.Constants;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
+import org.jline.reader.LineReader;
 
 public class CommunicationHandler extends ChannelInboundHandlerAdapter {
 
     private ChannelHandlerContext ctx;
+
+    private LineReader deerlet;
+
+    public CommunicationHandler(LineReader deerlet) {
+        this.deerlet = deerlet;
+    }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
@@ -22,6 +31,6 @@ public class CommunicationHandler extends ChannelInboundHandlerAdapter {
     }
 
     public void send(Object object) {
-
+        ctx.writeAndFlush(Unpooled.copiedBuffer(object.toString() + Constants.SPLIT_CHAR, CharsetUtil.UTF_8));
     }
 }

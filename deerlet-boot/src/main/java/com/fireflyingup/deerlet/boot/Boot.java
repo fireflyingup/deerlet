@@ -8,6 +8,9 @@ import com.sun.tools.attach.VirtualMachine;
 import org.apache.commons.lang3.ObjectUtils;
 
 import java.io.File;
+import java.lang.instrument.Instrumentation;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.*;
 
 /**
@@ -23,6 +26,9 @@ import java.util.*;
 
 public class Boot {
 
+    private static final String CORE_CLASS_NAME = "com.fireflyingup.deerlet.client.DeerletClient";
+    private static final String CORE_METHOD_NAME = "run";
+
     public static void main(String[] args) throws Exception {
         String pid = findPid();
         VirtualMachine virtualMachine = null;
@@ -32,7 +38,26 @@ public class Boot {
         if (!file.exists()) {
             throw new Exception("agent.jar 未找到");
         }
-        virtualMachine.loadAgent(file.getAbsolutePath());
+        StringBuilder stringBuilder = new StringBuilder();
+        if (ObjectUtils.isNotEmpty(args)) {
+            for (String arg : args) {
+                stringBuilder.append(arg).append(" ");
+            }
+        }
+        stringBuilder.append("-pid ").append(pid);
+        virtualMachine.loadAgent(file.getAbsolutePath(), stringBuilder.toString());
+        Map<String, Object> map = new HashMap<>();
+        map.put("port", 6666);
+
+        try {
+            File clientFile = new File(parentPath, "deerlet-client.jar");
+            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{clientFile.toURI().toURL()});
+            Class<?> aClass = urlClassLoader.loadClass(CORE_CLASS_NAME);
+            Object application = aClass.getConstructor().newInstance();
+            aClass.getDeclaredMethod(CORE_METHOD_NAME, Map.class).invoke(application, map);
+        } catch (Throwable e) {
+            PrintLog.error("error: ", e);
+        }
     }
 
     private static String getParentPath() {

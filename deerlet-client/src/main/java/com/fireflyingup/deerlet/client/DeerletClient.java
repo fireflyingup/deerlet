@@ -2,6 +2,7 @@ package com.fireflyingup.deerlet.client;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
+import com.fireflyingup.deerlet.common.PrintLog;
 import com.fireflyingup.deerlet.netty.client.DeerletNettyClient;
 import com.fireflyingup.deerlet.netty.client.MyClientHandler;
 import com.fireflyingup.deerlet.netty.client.SocketChannelInitializer;
@@ -18,52 +19,47 @@ import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.impl.history.DefaultHistory;
 
+import java.util.Map;
+
 public class DeerletClient {
 
-    @Parameter(names = {"-host"}, description = "host of target agent")
     private String host = "127.0.0.1";
 
-    @Parameter(names = {"-port"}, description = "port of target agent")
     private Integer port = 6666;
 
-    public void run(String[] args) throws Exception {
+    public void run(Map<String, Object> map) throws Exception {
 
-        DeerletClient deerletClient = new DeerletClient();
-        JCommander.newBuilder().addObject(deerletClient).build().parse(args);
-
-        if (ObjectUtils.isNotEmpty(deerletClient.getHost())) {
-            this.setHost(deerletClient.getHost());
+        if (ObjectUtils.isNotEmpty(map.get("host"))) {
+            this.setHost(map.get("host").toString());
         }
 
-        if (ObjectUtils.isNotEmpty(deerletClient.getPort())) {
-            this.setPort(deerletClient.getPort());
+        if (ObjectUtils.isNotEmpty(map.get("port"))) {
+            this.setPort(Integer.valueOf(map.get("port").toString()));
         }
-        CommunicationHandler communicationHandler = new CommunicationHandler();
-
-        DeerletNettyClient deerletNettyClient = new DeerletNettyClient()
-                .setIp(deerletClient.host)
-                .setPort(deerletClient.port)
-                .setChannelInitializer(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        ChannelPipeline pipeline = socketChannel.pipeline();
-                        pipeline.addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer(Constants.SPLIT_CHAR.getBytes())));
-                        pipeline.addLast(new StringDecoder());
-                        pipeline.addLast(new StringEncoder());
-                        pipeline.addLast(new IdleStateHandler(5, 5, 10));
-                        pipeline.addLast(communicationHandler);
-                    }
-                });
-        deerletNettyClient.start();
 
         LineReader deerlet = LineReaderBuilder.builder()
                 .appName("deerlet")
                 .history(new DefaultHistory())
                 .build();
 
+        CommunicationHandler communicationHandler = new CommunicationHandler(deerlet);
+
+        new Thread(() -> {
+            DeerletNettyClient deerletNettyClient = new DeerletNettyClient()
+                    .setIp(this.host)
+                    .setPort(this.port)
+                    .addHandler(communicationHandler);
+            try {
+                deerletNettyClient.start();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+
         while (true) {
             String s = deerlet.readLine("[deerlet]$ ");
             System.out.println(s);
+            communicationHandler.send(s);
         }
     }
 

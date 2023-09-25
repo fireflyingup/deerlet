@@ -44,6 +44,16 @@
             <groupId>com.fireflyingup</groupId>
             <artifactId>deerlet-common</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.fireflyingup</groupId>
+            <artifactId>deerlet-netty-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

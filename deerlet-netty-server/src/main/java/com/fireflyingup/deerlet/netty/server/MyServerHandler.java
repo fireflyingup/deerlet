@@ -17,12 +17,13 @@ public class MyServerHandler extends ChannelInboundHandlerAdapter {
         //获取客户端发送过来的消息
         ByteBuf byteBuf = (ByteBuf) msg;
         System.out.println("收到客户端" + ctx.channel().remoteAddress() + "发送的消息：" + byteBuf.toString(CharsetUtil.UTF_8));
+        ctx.writeAndFlush(Unpooled.copiedBuffer("服务端已收到消息，消息结束" + Constants.SPLIT_CHAR, CharsetUtil.UTF_8));
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         //发送消息给客户端
-        ctx.writeAndFlush(Unpooled.copiedBuffer("服务端已收到消息，并给你发送一个问号?" + Constants.SPLIT_CHAR, CharsetUtil.UTF_8));
+//        ctx.writeAndFlush(Unpooled.copiedBuffer("服务端已收到消息，消息结束" + Constants.SPLIT_CHAR, CharsetUtil.UTF_8));
     }
 
     @Override
