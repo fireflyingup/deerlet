@@ -13,7 +13,7 @@ import java.util.List;
 public class DeerletNettyServer {
 
     //创建两个线程组 boosGroup、workerGroup
-    private static EventLoopGroup bossGroup = new NioEventLoopGroup();
+    private static EventLoopGroup bossGroup = new NioEventLoopGroup(1);
     private static EventLoopGroup workerGroup = new NioEventLoopGroup();
 
     private String ip;
